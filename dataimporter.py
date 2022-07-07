@@ -4,7 +4,7 @@ import os
 import django
 import sqlite3
 
-from matplotlib.pyplot import title
+
 
 # Django設定
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'datacenter.settings')

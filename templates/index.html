@@ -46,7 +46,7 @@
             <td>{{forloop.counter}}</td>
             <!-- 要讓TITLE點下去後到我們自己的頁面 -->
             <td><a href="/show/{{item.id}}/" style="text-decoration:none; color:black">{{item.title}}</a><br>
-                <a href="{{item.url}}"class="btn btn-sm btn-outline-primary">原始出處</a>
+                <a href="{{item.url}}" class="btn btn-sm btn-outline-primary">原始出處</a>
             </td>
             <td>{{item.pdate}}</td>
             <!-- <td>{{item.url}}</td> -->
@@ -64,5 +64,30 @@
 <br>
 <h5>※原始資料</h5>
 {{get_news}}
+
+<h5>※分頁</h5>
+<!-- {% if posts.has_previous %}
+<a href="?p={{ page.previous_page_number }}">Previous</a>
+{% endif %}
+<span class="current">
+    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+</span>
+{% if posts.has_next %}
+<a href="?p={{ page.next_page_number }}">Next</a>
+{% endif %} -->
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="page/1">1</a></li>
+      <li class="page-item"><a class="page-link" href="page/2">2</a></li>
+      <li class="page-item"><a class="page-link" href="page/3">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
 
 {% endblock %}

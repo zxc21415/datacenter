@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}新聞分頁{% endblock %}
+{% block headmessage %}<h2></h2>{% endblock %}
+{% block content %}
+
+<h5>※分頁</h5>
+<!-- {% if posts.has_previous %}
+<a href="?p={{ page.previous_page_number }}">Previous</a>
+{% endif %}
+<span class="current">
+    Page {{ page.number }} of {{ page.paginator.num_pages }}.
+</span>
+{% if posts.has_next %}
+<a href="?p={{ page.next_page_number }}">Next</a>
+{% endif %} -->
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">編號</th>
+            <th scope="col">新聞標題</th>
+            <th scope="col">日期</th>
+            <!-- <th scope="col">原始網址</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in page_list %}
+        <tr>
+            <!-- <td>{{item.id}}</td> -->
+            <!-- {{forloop.counter}}自己的編碼，不是自動遞增的。{{forloop.counter0}}就是從0開始 -->
+            <td>{{item.id}}</td>
+            <!-- 要讓TITLE點下去後到我們自己的頁面 -->
+            <td><a href="/show/{{item.id}}/" style="text-decoration:none; color:black">{{item.title}}</a><br>
+                <a href="{{item.url}}" class="btn btn-sm btn-outline-primary">原始出處</a>
+            </td>
+            <td>{{item.pdate}}</td>
+            <!-- <td>{{item.url}}</td> -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if page.has_previous %}{% else %}disabled{% endif %}">
+        <a class="page-link" href="/page/{% if page.has_previous %}{{ page.previous_page_number }}{% else %}1{% endif %}/" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      {% if page.has_previous %}
+      <li class="page-item"><a class="page-link" href="/page/{% if page.has_previous %}{{ page.previous_page_number }}{% else %}1{% endif %}">{% if page.has_previous %}{{ page.number|add:-1 }}{% else %}1{% endif %}</a></li>
+      {% else %}{% endif %}
+      <li class="page-item"><a class="page-link active" href="/page/{{ page.number }}">{{ page.number }}</a></li>
+      {% if page.has_next %}
+      <li class="page-item"><a class="page-link" href="/page/{% if page.has_next %}{{ page.next_page_number }}{% else %}{{ page.num_pages }}{% endif %}">{% if page.has_next %}{{ page.next_page_number }}{% else %}{{ page.num_pages }}{% endif %}</a></li>
+      {% else %}{% endif %}
+      <li class="page-item {% if page.has_next %}{% else %}disabled{% endif %}" >
+        <a class="page-link" href="/page/{% if page.has_next %}{{ page.next_page_number }}{% else %}{{ page.num_pages }}{% endif %}/">Next</a>
+      </li>
+    </ul>
+  </nav>
+
+{% endblock %}

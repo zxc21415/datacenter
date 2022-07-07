@@ -18,10 +18,13 @@ from django.urls import path
 from mysite import views
 
 urlpatterns = [
+    path('page/<int:pg>/', views.page),
     path('show/<int:id>/', views.show),
     path('lotto/', views.lotto),
 
     path('admin/', admin.site.urls),
+
+    # path('/?p=<int:p>/', views.index),
 
     #如果沒有說要去哪=去首頁
     path('', views.index),

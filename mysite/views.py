@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import random
 from mysite.models import News
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 
@@ -31,6 +32,27 @@ def index(requests):
     get_news = News.objects.all()
 
 
+## 此行肯定要修
+    # current_page = News.objects.get(p)
+    # paginator = Paginator(get_news, 25)
+    
+    # try:
+    #     page = paginator.page(current_page)
+    #     # has_next              是否有下一頁
+    #     # next_page_number      下一頁頁碼
+    #     # has_previous          是否有上一頁
+    #     # previous_page_number  上一頁頁碼
+    #     # object_list           分頁之後的資料列表
+    #     # number                當前頁
+    #     # paginator             paginator物件
+    # except PageNotAnInteger:
+    #     page = paginator.page(1)
+    # except EmptyPage:
+    #     page = paginator.page(paginator.num_pages)
+    
+
+
+
     return render(requests,"index.html",locals())
 
 def lotto(requests):
@@ -46,9 +68,30 @@ def lotto(requests):
 
 
 def show(requests,id):
-    #前面ID是欄位名稱
+    #前面ID是欄位名稱，後面是參數
     item = News.objects.get(id=id)
 
     return render(requests,"show.html",locals())
+
+def page(requests,pg):
+    get_news = News.objects.all()
+    current_page = pg
+    paginator = Paginator(get_news, 25)
+    
+    try:
+        page = paginator.page(current_page)
+        # has_next              是否有下一頁
+        # next_page_number      下一頁頁碼
+        # has_previous          是否有上一頁
+        # previous_page_number  上一頁頁碼
+        # object_list           分頁之後的資料列表
+        # number                當前頁
+        # paginator             paginator物件
+        page_list = page.object_list
+    except PageNotAnInteger:
+        page = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
+    return render(requests,"page.html",locals())
 
 
