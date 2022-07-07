@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}樂透網頁{% endblock %}
+{% block headmessage %}<h2>【樂透預測程式】</h2>{% endblock %}
+{% block content %} 
+    {% for i in lotto %}
+        <span class="badge text-bg-warning" style="font-size: 20pt ;width:60px;height:60px;border-radius:999em;line-height:42px;"><big><p style="
+            
+            transform: translate(-25%, 0%);
+            -webkit-transform: translate(-25%, 0%);
+            -moz-transform: translate(-25%, 0%);
+            -ms-transform: translate(-25%, 0%);
+            -o-transform: translate(-25%, 0%);">{{i}}</p></big></span>
+    {% endfor %}
+{% endblock %}

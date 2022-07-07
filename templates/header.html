@@ -1,0 +1,68 @@
+<style type="text/css">
+    .nav-pills .nav-link.active {
+        color: white;
+        background-color: #5d6064
+    }
+    .nav {
+    --bs-nav-link-color: black;
+    }
+</style>
+
+
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom ">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+            <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">學習程式中</font>
+            </font>
+        </span>
+    </a>
+
+    <div id="navbarNavDropdown">
+
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link {% if url == '/' %}active{% endif %}" aria-current="page">
+                    <!-- style="background-color: #5d6064;"> -->
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;" >首頁</font>
+                    </font>
+                </a></li>
+            <li class="nav-item"><a href="#" class="nav-link">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;" >作品</font>
+                    </font>
+                </a></li>
+            <li class="nav-item"><a href="#" class="nav-link">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;" >圖表</font>
+                    </font>
+                </a></li>
+            <li class="nav-item"><a href="https://www.nkust.edu.tw/" class="nav-link">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;" >我的學校</font>
+                    </font>
+                </a></li>
+            <li class="nav-item"><a href="/lotto/" class="nav-link {% if url == 'lotto' %}active{% endif %}">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;" >樂透分析</font>
+                    </font>
+                </a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    數據分析
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+
+</header>
