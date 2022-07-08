@@ -3,8 +3,9 @@
         color: white;
         background-color: #5d6064
     }
+
     .nav {
-    --bs-nav-link-color: black;
+        --bs-nav-link-color: black;
     }
 </style>
 
@@ -27,29 +28,31 @@
             <li class="nav-item"><a href="/" class="nav-link {% if url == '/' %}active{% endif %}" aria-current="page">
                     <!-- style="background-color: #5d6064;"> -->
                     <font style="vertical-align: inherit;">
-                        <font style="vertical-align: inherit;" >首頁</font>
+                        <font style="vertical-align: inherit;">首頁</font>
                     </font>
                 </a></li>
             <li class="nav-item"><a href="#" class="nav-link">
                     <font style="vertical-align: inherit;">
-                        <font style="vertical-align: inherit;" >作品</font>
-                    </font>
-                </a></li>
-            <li class="nav-item"><a href="#" class="nav-link">
-                    <font style="vertical-align: inherit;">
-                        <font style="vertical-align: inherit;" >圖表</font>
-                    </font>
-                </a></li>
-            <li class="nav-item"><a href="https://www.nkust.edu.tw/" class="nav-link">
-                    <font style="vertical-align: inherit;">
-                        <font style="vertical-align: inherit;" >我的學校</font>
+                        <font style="vertical-align: inherit;">作品</font>
                     </font>
                 </a></li>
             <li class="nav-item"><a href="/lotto/" class="nav-link {% if url == 'lotto' %}active{% endif %}">
                     <font style="vertical-align: inherit;">
-                        <font style="vertical-align: inherit;" >樂透分析</font>
+                        <font style="vertical-align: inherit;">樂透分析</font>
                     </font>
                 </a></li>
+            <li class="nav-item"><a href="https://www.nkust.edu.tw/" class="nav-link">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">我的學校</font>
+                    </font>
+                </a></li>
+            <li class="nav-item"><a href="/admin/" class="nav-link">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">後台管理</font>
+                    </font>
+                </a></li>
+
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
