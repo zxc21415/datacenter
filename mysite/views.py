@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import random
-from mysite.models import News
+from mysite.models import CompanyType, News,Company,StockInfo
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -95,3 +95,22 @@ def page(requests,pg):
     return render(requests,"page.html",locals())
 
 
+def stock(requests):
+    url = "stock"
+    ct = CompanyType.objects.all()
+    return render(requests,"stock.html",locals())
+
+def company(requests,id):
+    #前面ID是欄位名稱，後面是網址參數
+    ct = CompanyType.objects.get(id=id)
+    #這個ct再傳入Company去尋找相同的資料內容
+    companies = Company.objects.filter(ct=ct)
+    return render(requests,"company.html",locals())
+
+def stockinfo(requests,id):
+    #此處ID要等於台積電ID
+    company = Company.objects.get(id=id)
+    #靠ID去stockinfo抓資料
+    data = StockInfo.objects.filter(company=company).order_by('dateinfo')[:50]
+    return render(requests,"stockinfo.html",locals())
+    

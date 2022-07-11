@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}股市觀測站{% endblock %}
+{% block headmessage %}<h2>【股市觀測站】</h2>{% endblock %}
+{% block content %}
+<!-- <table class="table table-striped">
+
+    <tbody>
+       
+        <tr>
+            <td>{{item.pdate}}</td>
+        </tr>
+        <tr>
+            <td>{{item.content}}</td>
+        </tr>
+        
+    </tbody>
+</table> -->
+<select>
+    <option>請選擇產業類別</option>
+    {% for item in ct %}
+    <option>{{item.name}}</option>
+    {% endfor %}
+</select>
+<hr>
+{% for item in ct %}
+<a class="btn btn-sm btn-outline-primary" href="/company/{{item.id}}/">
+    {{item.name}}
+</a>
+{% endfor %}
+
+<hr>
+{{ct}}
+{% endblock %}

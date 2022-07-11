@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}股市觀測站{% endblock %}
+{% block headmessage %}<h2>{{company.name}}({{company.code}})</h2>{% endblock %}
+{% block content %}
+
+<!-- 畫圖 -->
+<canvas id="myChart" width="400" height="150"></canvas>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    //什麼圖在這裡換
+    type: 'line',
+    data: {
+        labels: [
+            // 目前先換日期
+                {% for item in data %}
+                    '{{item.dateinfo}}',
+                {% endfor %}
+        ],
+        datasets: [{
+            label: '{{company.name}}({{company.code}}) 股價資訊圖',
+            // 目前先換收盤價
+            data: [
+                {% for item in data %}
+                    {{item.close_price}},
+                {% endfor %}
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+
+
+<hr>
+
+<table class="table table-sm table-striped" style="text-align:center ;">
+    <tbody>
+        <tr>
+            <!-- <th scope="col">公司名稱</th> -->
+            <th scope="col">日期</th>
+            <th scope="col">開盤價</th>
+            <th scope="col">收盤價</th>
+            <th scope="col">交易量</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <!-- <td>{{company.name}}</td> -->
+            <td>{{item.dateinfo}}</td>
+            <td>{{item.open_price}}</td>
+            <td>{{item.close_price}}</td>
+            <td>{{item.volume}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+{% endblock %}

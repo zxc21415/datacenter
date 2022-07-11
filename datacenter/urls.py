@@ -18,7 +18,15 @@ from django.urls import path
 from mysite import views
 
 urlpatterns = [
+    #個股歷代交易資訊頁面
+    path('stockinfo/<int:id>/', views.stockinfo),
+    #股票的公司
+    path('company/<int:id>/', views.company),
+    #股票類別呈現頁面
+    path('stock/', views.stock),
+    #分頁
     path('page/<int:pg>/', views.page),
+    #新聞頁面
     path('show/<int:id>/', views.show),
     path('lotto/', views.lotto),
 
