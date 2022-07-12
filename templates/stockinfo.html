@@ -4,7 +4,18 @@
 {% block content %}
 
 <!-- 畫圖 -->
-<canvas id="myChart" width="400" height="150"></canvas>
+<div class="row">
+    <div class="col">
+        <canvas id="myChart" width="400" height="300"></canvas>
+    </div>
+    <div class="col">
+        {% autoescape off %}
+        {{plot_div}}
+        {{plot_div2}}
+        {% endautoescape off %}
+    </div>
+</div>
+
 <script>
 const ctx = document.getElementById('myChart').getContext('2d');
 const myChart = new Chart(ctx, {

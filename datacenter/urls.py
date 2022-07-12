@@ -18,6 +18,10 @@ from django.urls import path
 from mysite import views
 
 urlpatterns = [
+    #字詞統計
+    path('chart/', views.chart),
+    #告訴她沒有跟數字的也可以接收
+    path('stockinfo/', views.stockinfo),
     #個股歷代交易資訊頁面
     path('stockinfo/<int:id>/', views.stockinfo),
     #股票的公司

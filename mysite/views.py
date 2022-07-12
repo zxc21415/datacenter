@@ -1,3 +1,6 @@
+from ast import keyword
+from plotly.offline import plot
+import plotly.graph_objs as go
 from django.shortcuts import render
 import random
 from mysite.models import CompanyType, News,Company,StockInfo
@@ -7,7 +10,16 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #定義一個finc叫index
 #給網頁用的要求第一個參數要request
-def index(requests):
+def index(request):
+    if request.method=="POST":
+        #針對內文查詢
+        #查詢進
+        keyword = request.POST.get("keyword")
+        get_news = News.objects.filter(content__contains=keyword)
+    else:
+        #首頁進
+        get_news = News.objects.all()
+    count= len(get_news)
     url = "/"
     name = "DyAF"
     #用哪個HTML顯示
@@ -29,7 +41,7 @@ def index(requests):
 
     # 從DB撈資料，存到變數才可以放去首頁
     # News.objects.all().order_by('欄位') 可以換順序
-    get_news = News.objects.all()
+    #get_news = News.objects.all()
 
 
 ## 此行肯定要修
@@ -53,7 +65,7 @@ def index(requests):
 
 
 
-    return render(requests,"index.html",locals())
+    return render(request,"index.html",locals())
 
 def lotto(requests):
     url = "lotto"
@@ -107,10 +119,46 @@ def company(requests,id):
     companies = Company.objects.filter(ct=ct)
     return render(requests,"company.html",locals())
 
-def stockinfo(requests,id):
+#預設參數id=1
+def stockinfo(request,id=1):
+    #找出是從按鈕近還是表單進
+    if request.method=="POST": #表單進
+        comp = request.POST.get("comp") #SELECT NAME
+        print(comp)
+        company = Company.objects.get(id = comp)
+    else:  #如果不是使用表單轉來這個網頁，就直接使用參數id來找出公司
+        company = Company.objects.get(id = id)
+
     #此處ID要等於台積電ID
-    company = Company.objects.get(id=id)
-    #靠ID去stockinfo抓資料
+    #company = Company.objects.get(id=id)
+    #靠ID去stockinfo抓資料(表格用)
     data = StockInfo.objects.filter(company=company).order_by('dateinfo')[:50]
-    return render(requests,"stockinfo.html",locals())
+    last50 = data[:50]  #資料表用的
+    #畫圖用的1
+    prices = [d.open_price for d in data]
+    prices2 = [d.close_price for d in data]
+    volumes=[ (d.volume/1000) for d in data ]  #以千為當單位
+    dates = [d.dateinfo for d in data]
+    #原先
+    #plot_div = plot([go.Scatter(x=dates,y=prices,mode='lines')],output_type="div" )
+    #改為兩條
+    plot_div = plot([go.Scatter(x=dates,y=prices,mode='lines'),go.Scatter(x=dates,y=prices2,mode='lines'),go.Bar(x=dates,y=volumes)],output_type="div" )
+    return render(request,"stockinfo.html",locals())
+
+def chart(request):
+    #處理關鍵字資料
+    keywords=""
+    #表單進
+    if request.method=="POST":
+        keywords = request.POST.get("keywords")
+    if keywords=="":
+        #預設值:
+        keywords="雲科,北科,高科"
+    keywords = keywords.split(",")
+    data = list()
+    for keyword in keywords:
+        data.append(News.objects.filter(content__contains=keyword.strip()).count())
+        
+    return render(request,"chart.html",locals())
+
     

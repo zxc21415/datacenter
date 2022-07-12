@@ -2,92 +2,129 @@
 {% block title %}網頁標題{% endblock %}
 {% block headmessage %}<h2></h2>{% endblock %}
 {% block content %}
-<h3>【歡迎】</h3>
-<p style="text-align: center;">
-    {% if name %}
-    歡迎{{name}}
-    {% else %}
-    陌生人
-    {% endif %}
-</p>
 
-<h3>【筆記】</h3>
-<p>
-    可取用views裡面index裡面的變數<br>
-    用法:{ { 變數 } }<br>
-    (空格要去掉) <br>
-    <br>
-    # { { 變數 } }<br>
-    此處會被渲染(render)，會檢查雙大括號，會回去func找有沒有該變數<br>
-    <br>
-    # 想要寫條件要加上{ % 條件 % }<br>
-</p>
+<!-- 存放一些筆記 -->
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="false" aria-controls="collapseOne">
+                練習 #1 【歡迎】
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <strong style="text-align: center;">
+                    <h3>【歡迎】</h3>
+                </strong>
+                <p style="text-align: center;">
+                    {% if name %}
+                    歡迎{{name}}
+                    {% else %}
+                    陌生人
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                練習 #2 【筆記】
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <strong>
+                    <h3>【筆記】</h3>
+                </strong>
+                <p>
+                    可取用views裡面index裡面的變數<br>
+                    用法:{ { 變數 } }<br>
+                    (空格要去掉) <br>
+                    <br>
+                    # { { 變數 } }<br>
+                    此處會被渲染(render)，會檢查雙大括號，會回去func找有沒有該變數<br>
+                    <br>
+                    # 想要寫條件要加上{ % 條件 % }<br>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                練習 #3 【從資料庫抓資料】
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <strong>
+                    <h3>【從資料庫抓資料】</h3>
+                </strong> <div>
+                    <h5>※列表方式</h5>
+                    <ul>
+                        {% for item in get_news %}
+                        <li><a href="{{item.url}}">{{item.title}}</a>{{item.pdate}}/</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5>※原始資料</h5>
+                    {{get_news}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-
-
+<br><br>
 <h3>【從資料庫抓資料】</h3>
-<br>
-<h5>※表格呈現</h5>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">編號</th>
-            <th scope="col">新聞標題</th>
-            <th scope="col">日期</th>
-            <!-- <th scope="col">原始網址</th> -->
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in get_news %}
-        <tr>
-            <!-- <td>{{item.id}}</td> -->
-            <!-- {{forloop.counter}}自己的編碼，不是自動遞增的。{{forloop.counter0}}就是從0開始 -->
-            <td>{{forloop.counter}}</td>
-            <!-- 要讓TITLE點下去後到我們自己的頁面 -->
-            <td><a href="/show/{{item.id}}/" style="text-decoration:none; color:black">{{item.title}}</a><br>
-                <a href="{{item.url}}" class="btn btn-sm btn-outline-primary">原始出處</a>
-            </td>
-            <td>{{item.pdate}}</td>
-            <!-- <td>{{item.url}}</td> -->
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<br>
-<h5>※列表方式</h5>
-<ul>
-    {% for item in get_news %}
-    <li><a href="{{item.url}}">{{item.title}}</a>{{item.pdate}}/</li>
-    {% endfor %}
-</ul>
-<br>
-<h5>※原始資料</h5>
-{{get_news}}
+<div class="row" style="margin-top: 10px ;">
+    <div class="alert alert-primary" role="alert">
+        文章關鍵字查詢，搜尋:「{{keyword}}」，共有：{{count}}篇
+      </div>
+    
 
-<h5>※分頁</h5>
-<!-- {% if posts.has_previous %}
-<a href="?p={{ page.previous_page_number }}">Previous</a>
-{% endif %}
-<span class="current">
-    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-</span>
-{% if posts.has_next %}
-<a href="?p={{ page.next_page_number }}">Next</a>
-{% endif %} -->
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="page/1">1</a></li>
-      <li class="page-item"><a class="page-link" href="page/2">2</a></li>
-      <li class="page-item"><a class="page-link" href="page/3">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav>
-
+    <form action="/" method="POST">
+        {% csrf_token %}
+        <input type="text" size=20 name="keyword" required>
+        <input type="submit" value="查詢">
+    </form>
+</div>
+<br>
+<div class="row">
+    <h5>※表格呈現</h5>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">編號</th>
+                <th scope="col">新聞標題</th>
+                <th scope="col">日期</th>
+                <!-- <th scope="col">原始網址</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in get_news %}
+            <tr>
+                <!-- <td>{{item.id}}</td> -->
+                <!-- {{forloop.counter}}自己的編碼，不是自動遞增的。{{forloop.counter0}}就是從0開始 -->
+                <td>{{forloop.counter}}</td>
+                <!-- 要讓TITLE點下去後到我們自己的頁面 -->
+                <td><a href="/show/{{item.id}}/" style="text-decoration:none; color:black">{{item.title}}</a><br>
+                    <a href="{{item.url}}" class="btn btn-sm btn-outline-primary">原始出處</a>
+                </td>
+                <td>{{item.pdate}}</td>
+                <!-- <td>{{item.url}}</td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
