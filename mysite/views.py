@@ -1,7 +1,8 @@
 from ast import keyword
 from plotly.offline import plot
 import plotly.graph_objs as go
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.http import JsonResponse,HttpResponse
 import random
 from mysite.models import CompanyType, News,Company,StockInfo
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -161,4 +162,13 @@ def chart(request):
         
     return render(request,"chart.html",locals())
 
-    
+def api_stock(request,code):
+    try:
+        c = Company.objects.get(code=code) #要找的公司
+        data = StockInfo.objects.filter(company = c) #用要找的公司去篩選出資料
+        stock_data=[(d.dateinfo.strftime("%Y-%m-%d"),d.close_price,d.volume) for d in data]
+        #print(stock_data) #(datetime.date(2020, 12, 31), 530.0)]
+        #return HttpResponse("OK") #測試用
+        return JsonResponse({"status":"ok","data":stock_data}) 
+    except:
+        return JsonResponse({"status":"fail"}) 

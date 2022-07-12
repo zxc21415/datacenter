@@ -2,25 +2,26 @@
 {% block title %}股市觀測站{% endblock %}
 {% block headmessage %}<h2>【股市觀測站】</h2>{% endblock %}
 {% block content %}
-<!-- <table class="table table-striped">
 
-    <tbody>
-       
-        <tr>
-            <td>{{item.pdate}}</td>
-        </tr>
-        <tr>
-            <td>{{item.content}}</td>
-        </tr>
-        
-    </tbody>
-</table> -->
-<select>
-    <option>請選擇產業類別</option>
-    {% for item in ct %}
-    <option>{{item.name}}</option>
-    {% endfor %}
-</select>
+<div style="margin: 5px;">
+    <form action="#" method="POST">
+        <!-- 避免跨平台攻擊 -->
+        {% csrf_token %}
+        <!-- 這裡管理送出去的東西 -->
+        <select name="ct">
+            <option>請選擇產業類別</option>
+            {% for item in ct %}
+                <option value="">{{item.name}}</option>
+            {% endfor %}
+        </select>
+        <!-- 送出 -->
+        <input type="submit"  value="送出">
+    </form>
+    
+</div>
+
+
+
 <hr>
 {% for item in ct %}
 <a class="btn btn-sm btn-outline-primary" style="margin: 2px;" href="/company/{{item.id}}/">
@@ -28,6 +29,4 @@
 </a>
 {% endfor %}
 
-<hr>
-{{ct}}
 {% endblock %}

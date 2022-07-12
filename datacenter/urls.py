@@ -18,6 +18,8 @@ from django.urls import path
 from mysite import views
 
 urlpatterns = [
+    #提供JSON
+    path('api/stock/<str:code>/', views.api_stock),
     #字詞統計
     path('chart/', views.chart),
     #告訴她沒有跟數字的也可以接收
