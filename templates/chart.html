@@ -3,65 +3,70 @@
 {% block headmessage %}<h2></h2>{% endblock %}
 {% block content %}
 
-<h3>【關鍵字繪圖】</h3>
-
+<h3>【字詞統計圖表】</h3>
+<p>可以輸入一個詞或多個詞。輸入多個詞中間請以半形逗號當分隔</p>
 <div class="row" style="margin-top: 10px ;">
-    <!-- <h5>文章關鍵字查詢，搜尋到：{{count}}篇</h5> -->
     <form action="/chart/" method="POST">
         {% csrf_token %}
-        <input type="text" size=20 name="keywords" required>
+        <input type="text" size=20 name="keyword" required>
         <input type="submit" value="繪圖">
     </form>
 </div>
 
-<canvas id="myChart" width="400" height="150"></canvas>
+<!-- 畫圖 -->
+<div class="row">
+    <div class="col">
+        <canvas id="myChart" width="400" height="150"></canvas>
+    </div>
+</div>
+
 <script>
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [
-            {% for k in keywords %}
-                '{{k}}',
-            {% endfor %}
-            ],
-            datasets: [{
-                label: '# of Votes',
-                data: [
-                {% for d in data %}
-                    {{ d }},
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    //什麼圖在這裡換
+    type: 'bar',
+    data: {
+        labels: [
+            // 目前先換日期
+                {% for item in word_list %}
+                    '{{item}}',
                 {% endfor %}
-                ],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+        ],
+        datasets: [{
+            label: '新聞字詞圖',
+            // 目前先換收盤價
+            data: [
+                {% for item in count_list %}
+                    {{item}},
+                {% endfor %}
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
             }
         }
-    });
-    </script>
-
-
-
+    }
+});
+</script>
 
 {% endblock %}

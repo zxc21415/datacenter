@@ -1,4 +1,4 @@
-from ast import keyword
+
 from plotly.offline import plot
 import plotly.graph_objs as go
 from django.shortcuts import render,redirect
@@ -6,6 +6,7 @@ from django.http import JsonResponse,HttpResponse
 import random
 from mysite.models import CompanyType, News,Company,StockInfo
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from plotly.subplots import make_subplots
 # Create your views here.
 
 
@@ -132,35 +133,78 @@ def stockinfo(request,id=1):
 
     #此處ID要等於台積電ID
     #company = Company.objects.get(id=id)
+    
     #靠ID去stockinfo抓資料(表格用)
     data = StockInfo.objects.filter(company=company).order_by('dateinfo')[:50]
     last50 = data[:50]  #資料表用的
     #畫圖用的1
     prices = [d.open_price for d in data]
     prices2 = [d.close_price for d in data]
-    volumes=[ (d.volume/1000) for d in data ]  #以千為當單位
-    dates = [d.dateinfo for d in data]
+    volumes=[ (d.volume) for d in data ]  #以千為當單位
+    dates = [(d.dateinfo).strftime("%Y-%m-%d") for d in data]
+    print(dates)
     #原先
     #plot_div = plot([go.Scatter(x=dates,y=prices,mode='lines')],output_type="div" )
     #改為兩條
-    plot_div = plot([go.Scatter(x=dates,y=prices,mode='lines'),go.Scatter(x=dates,y=prices2,mode='lines'),go.Bar(x=dates,y=volumes)],output_type="div" )
+    #plot_div = plot([go.Scatter(x=dates,y=prices,mode='lines'),go.Scatter(x=dates,y=prices2,mode='lines'),go.Bar(x=dates,y=volumes)],output_type="div" )
+
+    #改為兩種Y軸
+    # Create figure with secondary y-axis 增加右邊的Y軸
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+
+    fig.add_trace(
+        go.Bar(x=dates,y=volumes, name="成交量"),
+        secondary_y=False,
+    )
+
+    fig.add_trace(
+        go.Scatter(x=dates,y=prices, name="開盤價",mode='lines'),
+        secondary_y=True,
+    )
+    fig.add_trace(
+        go.Scatter(x=dates,y=prices2, name="收盤價",mode='lines'),
+        secondary_y=True,
+    )
+
+
+    plot_div = plot(fig,output_type="div")
+
     return render(request,"stockinfo.html",locals())
 
-def chart(request):
-    #處理關鍵字資料
-    keywords=""
-    #表單進
-    if request.method=="POST":
-        keywords = request.POST.get("keywords")
-    if keywords=="":
-        #預設值:
-        keywords="雲科,北科,高科"
-    keywords = keywords.split(",")
-    data = list()
-    for keyword in keywords:
-        data.append(News.objects.filter(content__contains=keyword.strip()).count())
+# def chart(request):
+#     #處理關鍵字資料
+#     keywords=""
+#     #表單進
+#     if request.method=="POST":
+#         keywords = request.POST.get("keywords")
+#     if keywords=="":
+#         #預設值:
+#         keywords="雲科,北科,高科"
+#     keywords = keywords.split(",")
+#     data = list()
+#     for keyword in keywords:
+#         data.append( News.objects.filter( content__contains=keyword.strip() ).count() )
         
+#     return render(request,"chart.html",locals())
+
+#自己寫的
+def chart(request):
+    if request.method=="POST":
+        #表單
+        get_keyword = request.POST.get("keyword")
+    else:
+        get_keyword = "北科,雲科,高科"
+    get_keyword_list = get_keyword.split(",")
+    word_list=list()
+    count_list=list()
+    for i in get_keyword_list:
+        word_list.append(i.strip())
+        count = News.objects.filter(content__contains=i.strip()).count()
+        count_list.append(count)
+    print(word_list,count_list)
     return render(request,"chart.html",locals())
+
 
 def api_stock(request,code):
     try:
