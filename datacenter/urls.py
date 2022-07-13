@@ -18,6 +18,12 @@ from django.urls import path
 from mysite import views
 
 urlpatterns = [
+    #去mongodb拿資料
+    path('api/mongo/<str:keyword>/', views.api_mongodb),
+    #提供JSON
+    path('mongodb-test/', views.mongodb_test),
+    #提供JSON
+    path('jquery-test/', views.jquery_test),
     #提供JSON
     path('api/stock/<str:code>/', views.api_stock),
     #字詞統計

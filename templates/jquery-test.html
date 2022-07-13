@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}jQuery Test{% endblock %}
+{% block headmessage %} <h2>jQuery Test</h2> {% endblock %}
+{% block content %}
+<input type=text value="1101" id="code" required>
+<a class="btn btn-primary" id="btn1">Load</a>
+<div id="target">N/A</div>
+
+<script>
+    $(document).ready(function () {
+        $('#btn1').click(function (event) {
+            var code = $('#code').val();
+            console.log(code);
+            $.ajax({
+                //JQ只允許抓自己的網址，而且要一模一樣
+                //127.0.0.1  這裡一定要跟你打進去的網址一樣
+                //http://localhost:8000/jquery-test/
+                //http://127.0.0.1:8000/jquery-test/
+                url: "http://127.0.0.1:8000/api/stock/" + code + "/",
+
+                success: function (result) {
+                    var data = "<div style='overflow-y: scroll; height:400px;'><table class='table table-striped'>";
+                    data += "<tr><td>日期</td><td>收盤價</td><td>成交量</td></tr>";
+                    result['data'].forEach((element) => {
+                        data += "<tr><td>" + element[0] + "</td><td>" + element[1] + "</td><td>" + element[2] + "</td></tr>";
+                    });
+                    data += "</table></div>";
+                    $('#target').html(data);
+                },
+                error: function (thrownError,err) { console.log("錯誤：" +thrownError+ err) }
+            });
+
+        });
+
+
+    });
+</script>
+
+{% endblock %}

@@ -1,4 +1,5 @@
 
+from numpy import place
 from plotly.offline import plot
 import plotly.graph_objs as go
 from django.shortcuts import render,redirect
@@ -7,6 +8,7 @@ import random
 from mysite.models import CompanyType, News,Company,StockInfo
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from plotly.subplots import make_subplots
+from pymongo import MongoClient
 # Create your views here.
 
 
@@ -216,3 +218,34 @@ def api_stock(request,code):
         return JsonResponse({"status":"ok","data":stock_data}) 
     except:
         return JsonResponse({"status":"fail"}) 
+
+def jquery_test(request):
+    # 不用做什麼事，因為是前端在處理。
+    # 只要渲染就可以
+    # 只要有提供後端資料給他抓就好
+    return render(request,"jquery-test.html",locals())
+
+def mongodb_test(request):
+    # 不用做什麼事，因為是前端在處理。
+    # 只要渲染就可以
+    # 只要有提供後端資料給他抓就好
+    return render(request,"mongodb-test.html",locals())
+
+
+def api_mongodb(request,keyword):
+    try:
+        conn = MongoClient("mongodb://root:example@localhost:27017/")
+        db = conn.NKUST
+        collection = db.news
+        
+        place = keyword
+        find_cmd = {"bornplace":{'$regex' : place}}
+        rows = collection.find(find_cmd)
+        data=list()
+        for row in rows:
+            data.append(row['author'])
+        
+            
+        return JsonResponse({"status":"ok","data":data}) 
+    except:
+        return JsonResponse({"status":"fail"})
